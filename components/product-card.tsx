@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useCallback } from "react";
+import { useState, useCallback, useEffect } from "react";
 import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -17,15 +17,18 @@ import {
 import { Product, PRODUCT_TYPES } from "@/lib/types";
 import { parseSizes } from "@/lib/utils/size-parser";
 import { toast } from "sonner";
+import Link from "next/link";
 
 interface ProductCardProps {
   product: Product;
+  index: number;
 }
 
-export function ProductCard({ product }: ProductCardProps) {
+export function ProductCard({ product, index }: ProductCardProps) {
   const [formData, setFormData] = useState<Product>({
     ...product,
     sizes: parseSizes(product.sizes),
+    index: index
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -52,6 +55,7 @@ export function ProductCard({ product }: ProductCardProps) {
       setIsSubmitting(false);
     }
   }, [formData]);
+
 
   return (
     <Card className="p-6 space-y-4">
@@ -139,12 +143,12 @@ export function ProductCard({ product }: ProductCardProps) {
         <div className="flex items-center space-x-2">
           <Switch
             id={`newItem-${formData.id}`}
-            checked={formData.newItem}
+            checked={formData.newItem.toString() === "FALSE" ? false : true}
             onCheckedChange={(checked) =>
               setFormData((prev) => ({ ...prev, newItem: checked }))
             }
           />
-          <Label htmlFor={`newItem-${formData.id}`}>New Item</Label>
+          <Label htmlFor={`newItem-${formData.id}`}>New Item </Label>
         </div>
 
         <div className="space-y-2">
@@ -160,11 +164,20 @@ export function ProductCard({ product }: ProductCardProps) {
 
         <Button
           className="w-full"
-          onClick={handleSubmit}
+          onClick={() => {
+            handleSubmit()
+          }}
           disabled={isSubmitting}
         >
           {isSubmitting ? "Updating..." : "Update Product"}
         </Button>
+        <Link href={`/item/${index}`}>
+        <Button
+         className="w-full mt-2"
+         >
+          Learn More
+        </Button>
+        </Link>
       </div>
     </Card>
   );

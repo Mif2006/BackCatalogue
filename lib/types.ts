@@ -7,6 +7,7 @@ export interface Product {
   discount: number;
   newItem: boolean;
   frontImage: string;
+  index: number;
 }
 
 export interface ProductFormData extends Product {
@@ -15,11 +16,12 @@ export interface ProductFormData extends Product {
 }
 
 export const PRODUCT_TYPES = [
-  'Clothing',
-  'Accessories',
-  'Footwear',
-  'Electronics',
-  'Home & Living',
+  'Rings',
+  'Earrings',
+  'Bracelets',
+  'Pendants',
+  'Falangue Rings',
+  'Mens wear',
 ] as const;
 
 // Generate size options from 12 to 21
